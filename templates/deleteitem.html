@@ -1,0 +1,62 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+	<div class="row divider blue">
+		<div class="col-md-12"></div>
+	</div>
+
+	<div class="row banner main">
+		<div class="col-md-1"></div>
+		<div class="col-md-11 padding-none">
+			<h1>Catalog App</h1>
+		</div>
+	</div>
+
+	<div class="flash">
+		{% with messages = get_flashed_messages() %}
+		{% if messages %}
+		<ul>
+			{% for message in messages %}
+			<li><strong>{{message}}</strong></li>
+			{% endfor %}
+		</ul>
+		{% endif %}
+		{% endwith %}
+	</div>
+
+	<div class="row padding-top padding-bottom">
+		<div class="col-md-1"></div>
+		<div class="col-md-10 padding-none"></div>
+		<div class="col-md-1"></div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-1"></div>
+		<div class="col-md-10">
+			<h2>Delete {{item.title}}</h2>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-1"></div>
+		<div class="col-md-10  padding-bottom">
+			<h3>Are you sure you want to delete?</h3>
+		</div>
+	</div>
+
+	<div class="row"> 
+		<div class="col-md-1"></div>
+		<div class="col-md-10">
+			
+			<form action="{{url_for('deleteItem', item_title=item.title)}}" method="POST">
+				<div class="form-group padding-top-10">
+                	<button type="submit" id="submit" class="btn btn-danger">Delete</button>
+                	<a href="{{url_for('showCategories')}}">
+                    	<button type="button" class="btn btn-default">Cancel</button>
+                	</a>
+            	</div>
+			</form>
+		</div>
+	</div>
+
+{% endblock %}

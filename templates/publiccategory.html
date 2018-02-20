@@ -1,0 +1,54 @@
+{% extends "main.html" %}
+{% block content %}
+{% include 'header.html' %}
+
+	<div class="row divider blue">
+		<div class="col-md-12"></div>
+	</div>
+
+	<div class="row banner main">
+		<div class="col-md-1"></div>
+		<div class="col-md-11 padding-none">
+			<h1>Catalog App</h1>
+		</div>
+	</div>
+
+	<div class="row padding-top padding-bottom">
+		<div class="col-md-1"></div>
+		<div class="col-md-10 padding-none"></div>
+		<div class="col-md-1"></div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-1"></div>
+		<div class="col-md-3">
+			<h2>Categories</h2>
+			{% for category in categories %}
+				<a href="{{url_for('showItems', chosen_category=category.name)}}">
+					<div class="row">
+						<div class="col-md-3 category-list">
+							<h3>{{category.name}}</h3>
+						</div>
+					</div>
+				</a>
+			{% endfor %}
+		</div>
+		<div class="col-md-1"></div>
+		<div class="col-md-4">
+			<h2>{{chosen_category}} Items</h2>
+			{% for item in items %}
+				<a href="{{url_for('showDescription', 
+				chosen_category=item.category.name,chosen_item=item.title)}}">
+					<div class="row">
+						<div class="col-md-3 category-list">
+							<h3>{{item.title}}</h3>
+						</div>
+					</div>						
+				</a>
+				
+			{% endfor %}
+		</div>
+		<div class="col-md-1"></div>
+	</div>
+
+{% endblock %}

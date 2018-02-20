@@ -1,0 +1,46 @@
+{% extends 'main.html' %}
+{% block content %}
+{% include "header.html" %}
+	<div class="row divider blue">
+		<div class="col-md-12"></div>
+	</div>
+
+	<div class="row banner main">
+		<div class="col-md-1"></div>
+		<div class="col-md-11 padding-none">
+			<h1>Catalog App</h1>
+		</div>
+	</div>
+
+	<div class="row padding-top padding-bottom">
+		<div class="col-md-1"></div>
+		<div class="col-md-10 padding-none"></div>
+		<div class="col-md-1"></div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-1"></div>
+		<div class="col-md-4">
+			<h2>New Category</h2>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-4 col-md-offset-1 padding-top">
+			<form action="#" method = "post">
+				<div class="form-group">
+					<!-- New category name -->
+					<p><label for="name">Category name:</label></p>
+					<input type ="text" class="form-control" maxlength="100" name="name">
+					<!-- Submit button -->
+					<div class="padding-bottom" ></div>
+					<button type="submit" class="btn btn-default" id="submit" type="submit">
+						<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+						Create
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+{% endblock %}

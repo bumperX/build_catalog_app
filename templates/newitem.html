@@ -1,0 +1,69 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+	<div class="row divider blue">
+		<div class="col-md-12"></div>
+	</div>
+
+	<div class="row banner main">
+		<div class="col-md-1"></div>
+		<div class="col-md-11 padding-none">
+			<h1>Catalog App</h1>
+		</div>
+	</div>
+
+	<div class="flash">
+		{% with messages = get_flashed_messages() %}
+		{% if messages %}
+		<ul>
+			{% for message in messages %}
+			<li><strong>{{message}}</strong></li>
+			{% endfor %}
+		</ul>
+		{% endif %}
+		{% endwith %}
+	</div>
+
+	<div class="row padding-top padding-bottom">
+		<div class="col-md-1"></div>
+		<div class="col-md-10 padding-none"></div>
+		<div class="col-md-1"></div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-1"></div>
+		<div class="col-md-3">
+			<h2>New Item</h2>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-4 col-md-offset-1 padding-top">
+			<form action="#" method = "post">
+				<div class="form-group">
+					<!-- New category name -->
+					<p><label for="name" style="padding-top: 20px;">Category name:</label></p>
+					<!-- <input type ="text" class="form-control" maxlength="100" name="name"> -->
+					<select class="form-control" name="name">
+						{% for i in categories %}
+						<option value='{{i}}'>{{i}}</option>
+						{% endfor %}
+					</select>
+
+					<!-- New item title -->
+					<p><label for="title" style="padding-top: 20px;">Item title:</label></p>
+					<input type ="text" class="form-control" maxlength="100" name="title">
+					<!-- New item description -->
+					<p><label for="description" style="padding-top: 20px;">Item description:</label></p>
+					<input type ="text" class="form-control" maxlength="100" name="description">
+					<!-- Submit button -->
+					<div class="padding-bottom"></div>
+					<button type="submit" class="btn btn-default" id="submit" type="submit">
+						Create
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+{% endblock %}

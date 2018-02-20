@@ -1,0 +1,80 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+	<div class="row top-menu">
+		<div class="col-md-10"></div>
+		<div class="col-md-2 text-right"></div>
+	</div>
+
+	<div class="row divider blue">
+		<div class="col-md-12"></div>
+	</div>
+
+	<div class="row banner main">
+		<div class="col-md-1"></div>
+		<div class="col-md-11 padding-none">
+			<h1>Catalog</h1>
+		</div>
+	</div>
+
+	<div class="flash">
+		{% with messages = get_flashed_messages() %}
+		{% if messages %}
+		<ul>
+			{% for message in messages %}
+			<li><strong>{{message}}</strong></li>
+			{% endfor %}
+		</ul>
+		{% endif %}
+		{% endwith %}
+	</div>
+
+	<div class="row padding-top padding-bottom">
+		<div class="col-md-1"></div>
+		<div class="col-md-10 padding-none"></div>
+		<div class="col-md-1"></div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-1"></div>
+		<div class="col-md-3">
+			<h2>Categories 
+				<a href="{{url_for('addCategory')}}">
+					<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+				</a>
+			</h2>
+			
+			{% for category in categories %}
+				<a href="{{url_for('showItems', chosen_category=category.name)}}">
+					<div class="row">
+						<div class="col-md-3 category-list">
+							<h3>{{category.name}}</h3>
+						</div>
+					</div>
+				</a>
+			{% endfor %}
+		</div>
+		<div class="col-md-1"></div>
+		<div class="col-md-4">
+			<h2>Lastest Items
+				<a href="{{url_for('addItem')}}">
+					<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+				</a>
+			</h2>
+			{% for item in items %}
+				<a href="{{url_for('showDescription', 
+				chosen_category=item.category.name,chosen_item=item.title)}}">
+					<div class="row">
+						<div class="col-md-4 category-list">
+							<h3>{{item.title}}<i>({{item.category.name}})</i></h3>
+						</div>
+					</div>
+				</a>
+			{% endfor %}
+		</div>
+		<div class="col-md-1"></div>
+	</div>
+
+
+
+{% endblock %}
