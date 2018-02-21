@@ -293,7 +293,8 @@ def showDescription(chosen_category, chosen_item):
     chosenItem = session.query(CategoryItem).filter(and_(
         CategoryItem.category_id == chosenCategory.id),
         CategoryItem.title == chosen_item).first()
-    return render_template('description.html', item=chosenItem)
+    return render_template(
+        'description.html', category=chosenCategory, item=chosenItem)
 
 
 # Add new category
@@ -345,40 +346,43 @@ def addItem():
         return render_template('newitem.html', categories=existCategoryNames)
 
 
-# Edit item
-@app.route('/catalog/<item_title>/edit', methods=['GET', 'POST'])
-def editItem(item_title):
+@app.route('/catalog/<chosen_category>/<chosen_item>/edit', methods=['GET', 'POST'])
+def editItem(chosen_category, chosen_item):
     if 'username' not in login_session:
         return redirect('/login')
 
-    editItem = session.query(CategoryItem).filter_by(title=item_title).one()
+    chosenCategory = session.query(Category).filter(
+        Category.name == chosen_category).first()
+    chosenItem = session.query(CategoryItem).filter(and_(
+        CategoryItem.category_id == chosenCategory.id),
+        CategoryItem.title == chosen_item).first()
 
-    if login_session['user_id'] != editItem.user_id:
+    if login_session['user_id'] != chosenItem.user_id:
         flash('You are not authorized to edit this item to this category.')
         return redirect(
-            url_for('showItems', chosen_category=getCategoryName(item_title)))
+            url_for('showItems', chosen_category=chosen_category))
 
     if request.method == 'POST':
         if (request.form['name'] and request.form['title'] and
                 request.form['description']):
-            editItem.title = request.form['title']
-            editItem.description = request.form['description']
-            editItem.category_id = getCategoryID(request.form['name'])
-            session.add(editItem)
+            chosenItem.title = request.form['title']
+            chosenItem.description = request.form['description']
+            chosenItem.category_id = getCategoryID(request.form['name'])
+            session.add(chosenItem)
             session.commit()
             flash("Item Successfully Edited")
             return redirect(
                 url_for('showItems', chosen_category=request.form['name']))
         else:
             flash("Category name, Item title and description are all needed!")
-            return render_template('edititem.html', item=editItem)
+            return render_template('edititem.html', item=chosenItem)
     else:
-        return render_template('edititem.html', item=editItem)
+        return render_template('edititem.html', item=chosenItem)
 
 
 # Delete item
 @app.route('/catalog/<item_title>/delete', methods=['GET', 'POST'])
-def deleteItem(item_title):
+def deleteItem(category_name, item_title):
     if 'username' not in login_session:
         return redirect('/login')
 
@@ -396,6 +400,7 @@ def deleteItem(item_title):
         return redirect(url_for('showCategories'))
     else:
         return render_template('deleteitem.html', item=deleteItem)
+
 
 # -----------------------------------------------------------------------------
 # HELPER FUNCTIONS
