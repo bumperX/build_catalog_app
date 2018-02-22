@@ -345,7 +345,7 @@ def addItem():
         # return render_template('newitem.html')
         return render_template('newitem.html', categories=existCategoryNames)
 
-
+# Edit item
 @app.route('/catalog/<chosen_category>/<chosen_item>/edit', methods=['GET', 'POST'])
 def editItem(chosen_category, chosen_item):
     if 'username' not in login_session:
@@ -381,20 +381,24 @@ def editItem(chosen_category, chosen_item):
 
 
 # Delete item
-@app.route('/catalog/<item_title>/delete', methods=['GET', 'POST'])
-def deleteItem(category_name, item_title):
+@app.route('/catalog/<chosen_category>/<chosen_item>/delete', methods=['GET', 'POST'])
+def deleteItem(chosen_category, chosen_item):
     if 'username' not in login_session:
         return redirect('/login')
 
-    deleteItem = session.query(CategoryItem).filter_by(title=item_title).one()
+    chosenCategory = session.query(Category).filter(
+        Category.name == chosen_category).first()
+    chosenItem = session.query(CategoryItem).filter(and_(
+        CategoryItem.category_id == chosenCategory.id),
+        CategoryItem.title == chosen_item).first()
 
-    if login_session['user_id'] != deleteItem.user_id:
+    if login_session['user_id'] != chosenItem.user_id:
         flash('You are not authorized to delete this item to this category.')
         return redirect(
-            url_for('showItems', chosen_category=getCategoryName(item_title)))
+            url_for('showItems', chosen_category=chosen_category))
 
     if request.method == 'POST':
-        session.delete(deleteItem)
+        session.delete(chosenItem)
         session.commit()
         flash("Item Successfully Deleted")
         return redirect(url_for('showCategories'))
@@ -432,11 +436,6 @@ def createUser(login_session):
 def getCategoryID(name):
     category = session.query(Category).filter_by(name=name).one()
     return category.id
-
-
-def getCategoryName(title):
-    item = session.query(CategoryItem).filter_by(title=title).one()
-    return item.category.name
 
 
 if __name__ == '__main__':
