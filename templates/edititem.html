@@ -43,7 +43,12 @@
 				<div class="form-group">
 					<!-- New category name -->
 					<p><label for="name" style="padding-top: 20px;">Category name:</label></p>
-					<input type ="text" class="form-control" maxlength="100" name="name">
+					<!-- <input type ="text" class="form-control" maxlength="100" name="name"> -->
+					<select class="form-control" name="name">
+						{% for i in categories %}
+						<option value='{{i}}'>{{i}}</option>
+						{% endfor %}
+					</select>
 					<!-- New item title -->
 					<p><label for="title" style="padding-top: 20px;">Item title:</label></p>
 					<input type ="text" class="form-control" maxlength="100" name="title">
