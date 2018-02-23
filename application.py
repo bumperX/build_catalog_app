@@ -351,6 +351,7 @@ def editItem(chosen_category, chosen_item):
     if 'username' not in login_session:
         return redirect('/login')
 
+    existCategoryNames = [i.name for i in session.query(Category).all()]
     chosenCategory = session.query(Category).filter(
         Category.name == chosen_category).first()
     chosenItem = session.query(CategoryItem).filter(and_(
@@ -363,8 +364,9 @@ def editItem(chosen_category, chosen_item):
             url_for('showItems', chosen_category=chosen_category))
 
     if request.method == 'POST':
-        if (request.form['name'] and request.form['title'] and
-                request.form['description']):
+        # if (request.form['name'] and request.form['title'] and
+        #         request.form['description']):
+        if (request.form['title'] and request.form['description']):
             chosenItem.title = request.form['title']
             chosenItem.description = request.form['description']
             chosenItem.category_id = getCategoryID(request.form['name'])
@@ -375,9 +377,11 @@ def editItem(chosen_category, chosen_item):
                 url_for('showItems', chosen_category=request.form['name']))
         else:
             flash("Category name, Item title and description are all needed!")
-            return render_template('edititem.html', item=chosenItem)
+            return render_template(
+                'edititem.html', categories=existCategoryNames, item=chosenItem)
     else:
-        return render_template('edititem.html', item=chosenItem)
+        return render_template(
+            'edititem.html', categories=existCategoryNames, item=chosenItem)
 
 
 # Delete item
